@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import preprocessing
+import torch.nn as nn
 
 # b = [15, 15, 25, 13, 17, 15, 35]
 # for index, values in enumerate(welding_data.columns[3:]):

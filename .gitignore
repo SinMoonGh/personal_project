@@ -159,5 +159,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-pp.csv
-pp.xlsx
+scaled_data.csv
+welding_data.xlsx
+practice.py
+data.ipynb
+test.py

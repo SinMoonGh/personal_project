@@ -10,34 +10,25 @@ import torch.nn as nn
 import matplotlib.pyplot as plt
 
 
-"""데이터 불러오기 -> 
-데이터 종류 및 개수 확인 -> 
-데이터 특성 파악(요약 통계량, 상관관계, histogram) ->
-데이터 정제(전처리) (변수제거, 정규화) ->
-오토인코더 모델 구축(잡음제거) ->
-훈련 데이터/ 테스트 데이터 분할 ->
-초매개변수, 손실 함수 및 옵티마이저 정의 ->
-오토인코더 학습 함수 정의 및 학습 ->
-임계값 정의 후 결과 분석 및 해석
-"""
+
 
 # TODO 1: 라이브러리/ 데이터 불러오기
 
 # welding_data.xlsx 파일을 불러옵니다.
 welding_data = pd.read_excel('../welding_data.xlsx', index_col = 'idx')
-st.write(welding_data.head())
+welding_data.head()
 
 # TODO 2: 데이터 종류 및 개수 확인
 
 # 데이터의 특성들이 어떤 값들을 가지고 있으며 몇 개씩 가지고 있는 지 확인
 for feature in welding_data:
-    st.write(feature, welding_data[feature].value_counts())
+    feature, welding_data[feature].value_counts()
 
 # 데이터 특성 파악
-st.write(welding_data.describe())
+# st.write(welding_data.describe())
 
 # 용접 제품/corr 함수를 통한 변수 간 상관관계 파악 가이드
-st.write(welding_data.corr(numeric_only=True))
+# st.write(welding_data.corr(numeric_only=True))
 
 # 용접 제품/ histogram을 통한 변수별 데이터 파악 가이드
 b = [15, 15, 25, 13, 17, 15, 35]
@@ -66,7 +57,7 @@ b = [15, 15, 25, 13, 17, 15, 35]
 
 # 용접기 데이터에서 필요없는 부분(생산 품목, 작업 시간, 소재두께)들을 제외
 new_welding_data = welding_data.iloc[:, 5:]
-st.write(new_welding_data.head())
+# st.write(new_welding_data.head())
 
 # MinMaxScaler를 통한 데이터 정규화 가이드
 
@@ -74,7 +65,7 @@ st.write(new_welding_data.head())
 scaler = preprocessing.MinMaxScaler()
 scaler.fit(new_welding_data)
 scaled_data = scaler.transform(new_welding_data)
-st.write(scaled_data)
+# st.write(scaled_data)
 
 # AutoEncoder 클래스 구현
 class AutoEncoder(nn.Module):
@@ -106,9 +97,9 @@ class AutoEncoder(nn.Module):
 
 # 기존이 데이터를 텐서 형태로 변환, 그리고 훈련세트와 테스트세트로 나눔
 train_data = torch.Tensor(scaled_data[:8470]) # 처음부터 8469번까지 데이터를 훈련세트로 지정
-st.write(len(train_data))
+# st.write(len(train_data))
 test_data = torch.Tensor(scaled_data[8479:]) # 8470번째 데이터부터 끝까지를 테스트세트로 지정
-st.write(len(test_data))
+# st.write(len(test_data))
 
 # 하이퍼파라미터, 손실 함수 및 옵티마이저 정의
 
@@ -126,7 +117,7 @@ criterion = nn.MSELoss()
 optimizer = torch.optim.Adam
 #오토인코더 정의
 AutoEncoder = AutoEncoder(input_size, hidden_size, output_size)
-st.write(AutoEncoder)
+# st.write(AutoEncoder)
 
 # 오토인코더 학습 함수 정의 및 학습
 
@@ -160,7 +151,7 @@ def train_net(AutoEncoder, data, criterion, epochs, lr_rate = 0.01):
 
 # 학습 함수를 이용한 오토인코더 학습
 AutoEncoder = train_net(AutoEncoder, train_data, criterion, epoch, lr)
-st.write(AutoEncoder)
+# st.write(AutoEncoder)
 
 # 임계값 정의 후 결과 분석 및 해석
 
@@ -172,7 +163,7 @@ for data in train_data:
     train_loss_chart.append(loss.item())
 
 threshold = np.mean(train_loss_chart) + np.std(train_loss_chart)*8
-st.write("Threshold : ", threshold)
+# st.write("Threshold : ", threshold)
 
 # 분석 결과값 도출
 
